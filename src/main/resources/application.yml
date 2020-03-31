@@ -1,0 +1,3 @@
+tspi:
+  receiver:
+    port: 59090

@@ -1,0 +1,7 @@
+*.class
+*.exe
+/TspiReceiver.iml
+/.idea/*
+/.gradle/*
+/build/*
+
