@@ -1,5 +1,6 @@
 package com.tspi.beans;
 
+import com.tspi.flow.filter.TspiSourceFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,7 @@ public class IntegrationConfiguration {
             @Qualifier("udpMsgTransformer") GenericTransformer<?,?> udpMsgTransformer) {
         return IntegrationFlows.from(udpInboundAdapter)
                 .transform(udpMsgTransformer)
+                .filter(sourceFilter())
                 .channel(udpTransformedInputChannel())
                 .get();
     }
@@ -31,6 +33,11 @@ public class IntegrationConfiguration {
     @Bean
     public GenericTransformer<?,?> udpMsgTransformer() {
         return new ObjectToStringTransformer();
+    }
+
+    @Bean
+    public TspiSourceFilter sourceFilter() {
+        return new TspiSourceFilter();
     }
 
     @Bean
