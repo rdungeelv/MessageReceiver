@@ -5,7 +5,7 @@ import org.influxdb.annotation.Measurement;
 
 @Measurement(name = "tspiData")
 public class TspiData {
-    @Column(name = "nanoseconds")
+    @Column(name = "time")
     private long nanoseconds;
 
     @Column(name = "trackE")
