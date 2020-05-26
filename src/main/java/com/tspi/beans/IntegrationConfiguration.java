@@ -1,8 +1,9 @@
 package com.tspi.beans;
 
-import com.tspi.flow.filter.TspiSourceFilter;
+import com.tspi.flow.handler.TspiDataInsertHandler;
 import com.tspi.flow.transform.TspiDataTransformer;
 import com.tspi.to.TspiData;
+import org.influxdb.InfluxDB;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.dsl.support.GenericHandler;
 import org.springframework.integration.ip.udp.UnicastReceivingChannelAdapter;
 import org.springframework.integration.transformer.GenericTransformer;
 import org.springframework.integration.transformer.ObjectToStringTransformer;
@@ -24,11 +26,12 @@ public class IntegrationConfiguration {
     @Bean
     public IntegrationFlow handleUdpMsgFlow(
             @Qualifier("udpInboundAdapter") UnicastReceivingChannelAdapter udpInboundAdapter,
-            @Qualifier("udpMsgTransformer") GenericTransformer<?,?> udpMsgTransformer) {
+            @Qualifier("udpMsgTransformer") GenericTransformer<?,?> udpMsgTransformer,
+            GenericHandler<TspiData> dataHandler) {
         return IntegrationFlows.from(udpInboundAdapter)
                 .transform(udpMsgTransformer)
                 .transform(tspiDataTransformer())
-                .filter(sourceFilter())
+                .handle(dataHandler)
                 .channel(udpTransformedInputChannel())
                 .get();
     }
@@ -44,8 +47,8 @@ public class IntegrationConfiguration {
     }
 
     @Bean
-    public TspiSourceFilter sourceFilter() {
-        return new TspiSourceFilter();
+    public GenericHandler<TspiData> dataHandler(InfluxDB influxDB) {
+        return new TspiDataInsertHandler(influxDB);
     }
 
     @Bean

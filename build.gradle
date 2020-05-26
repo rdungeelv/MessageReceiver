@@ -26,6 +26,7 @@ repositories {
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter-integration')
     compile "org.springframework.integration:spring-integration-ip"
+    compile "org.influxdb:influxdb-java:2.8"
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 }

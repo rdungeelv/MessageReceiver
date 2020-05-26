@@ -1,3 +1,15 @@
 tspi:
   receiver:
     port: 59090
+
+spring:
+  influxdb:
+    url: http://localhost:8086
+    username: user
+    password: ~
+    database: test
+    retention-policy: autogen
+    connect-timeout: 10
+    read-timeout: 30
+    write-timeout: 10
+#    gzip: true   Option to allow gzip compression in order to reduce size of the transferred data
