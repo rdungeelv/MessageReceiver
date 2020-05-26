@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class DatabaseConfiguration {
 
     @Bean
-    public InfluxDB connection(@Value("${spring.influxdb.url}") String url) {
+    public InfluxDB dbConnection(@Value("${spring.influxdb.url}") String url) {
         return InfluxDBFactory.connect(url);
     }
 }

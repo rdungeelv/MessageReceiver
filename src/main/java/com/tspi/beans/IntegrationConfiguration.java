@@ -13,7 +13,7 @@ import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.dsl.support.GenericHandler;
+import org.springframework.integration.handler.GenericHandler;
 import org.springframework.integration.ip.udp.UnicastReceivingChannelAdapter;
 import org.springframework.integration.transformer.GenericTransformer;
 import org.springframework.integration.transformer.ObjectToStringTransformer;
@@ -47,8 +47,8 @@ public class IntegrationConfiguration {
     }
 
     @Bean
-    public GenericHandler<TspiData> dataHandler(InfluxDB influxDB) {
-        return new TspiDataInsertHandler(influxDB);
+    public GenericHandler<TspiData> dataHandler(InfluxDB dbConnection) {
+        return new TspiDataInsertHandler(dbConnection);
     }
 
     @Bean
